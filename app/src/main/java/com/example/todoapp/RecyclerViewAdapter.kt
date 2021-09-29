@@ -33,5 +33,6 @@ class RecyclerViewAdapter(private val items: ArrayList<String>): RecyclerView.Ad
             }
         }
     }
+
     override fun getItemCount() = items.size
 }
