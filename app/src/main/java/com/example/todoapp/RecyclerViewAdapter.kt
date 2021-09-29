@@ -8,7 +8,7 @@ import android.widget.CompoundButton
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todoapp.databinding.ItemRowBinding
 
-class RecyclerViewAdapter(private val items: ArrayList<String>): RecyclerView.Adapter<RecyclerViewAdapter.ItemViewHolder>() {
+class RecyclerViewAdapter(private val items: ArrayList<ToDoItem>): RecyclerView.Adapter<RecyclerViewAdapter.ItemViewHolder>() {
 
     class ItemViewHolder(val binding: ItemRowBinding): RecyclerView.ViewHolder(binding.root)
 
@@ -22,12 +22,14 @@ class RecyclerViewAdapter(private val items: ArrayList<String>): RecyclerView.Ad
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        val item = items[position]
+        val item = items[position].content
         holder.binding.apply {
             cbItem.text = item
             cbItem.setOnCheckedChangeListener { _, _ ->
-                if (cbItem.isChecked)
+                if (cbItem.isChecked) {
                     cbItem.setTextColor(Color.GRAY)
+                    items[position].isSelected = true
+                }
                 else
                     cbItem.setTextColor(Color.BLACK)
             }
