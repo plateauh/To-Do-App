@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 lateinit var recyclerView: RecyclerView
+lateinit var recyclerViewAdapter: RecyclerViewAdapter
 lateinit var addItemBtn: FloatingActionButton
 lateinit var toDoList: ArrayList<ToDoItem>
 
@@ -23,7 +24,8 @@ class MainActivity : AppCompatActivity() {
         toDoList = arrayListOf()
 
         recyclerView = findViewById(R.id.rvItems)
-        recyclerView.adapter = RecyclerViewAdapter(toDoList)
+        recyclerViewAdapter = RecyclerViewAdapter(toDoList)
+        recyclerView.adapter = recyclerViewAdapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         addItemBtn = findViewById(R.id.addBtn)
@@ -41,7 +43,6 @@ class MainActivity : AppCompatActivity() {
         when(item.itemId){
             R.id.delete_option -> {
                 deleteItems()
-                recyclerView.adapter!!.notifyDataSetChanged()
                 return true
             }
         }
@@ -69,15 +70,21 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, "You have no item to delete!", Toast.LENGTH_SHORT).show()
             return
         }
+
         var plural = "items"
         var deleteCounter = 0
         for (item in toDoList){
-            if (item.isSelected){
-                toDoList.remove(item)
+            if (item.isSelected)
                 deleteCounter++
-            }
         }
+
         if (deleteCounter == 1) plural = "item"
         Toast.makeText(this, "$deleteCounter $plural deleted", Toast.LENGTH_SHORT).show()
+
+        // Sorry I cheated this from Almin's code ;)
+        toDoList.removeAll { item -> item.isSelected }
+        recyclerView.adapter!!.notifyDataSetChanged()
+
+
     }
 }

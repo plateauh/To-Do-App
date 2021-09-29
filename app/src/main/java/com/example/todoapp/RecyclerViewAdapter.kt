@@ -30,11 +30,14 @@ class RecyclerViewAdapter(private val items: ArrayList<ToDoItem>): RecyclerView.
                     cbItem.setTextColor(Color.GRAY)
                     items[position].isSelected = true
                 }
-                else
+                else{
                     cbItem.setTextColor(Color.BLACK)
+                    items[position].isSelected = false
+                }
             }
         }
     }
 
     override fun getItemCount() = items.size
+
 }
